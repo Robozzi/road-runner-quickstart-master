@@ -26,42 +26,45 @@ public class TeleOp extends LinearOpMode {
     public void runOpMode() {
 
         {
-        frontLeft = hardwareMap.get(DcMotor.class, "fata stanga");
-        frontRight = hardwareMap.get(DcMotor.class, "fata dreapta");
-        backLeft = hardwareMap.get(DcMotor.class, "spate stanga");
-        backRight = hardwareMap.get(DcMotor.class, "spate dreapta");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        angle = hardwareMap.get(Servo.class, "angle");
-        gear_rack = hardwareMap.get(Servo.class, "gear_rack");
+//        angle = hardwareMap.get(Servo.class, "angle");
+//        gear_rack = hardwareMap.get(Servo.class, "gear_rack");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-        {
-            double strafe = gamepad1.left_stick_x*1.1;
-            float turn;
-            turn=gamepad1.right_trigger+gamepad1.left_trigger;
-        }
+//        {
+
+//        }
         waitForStart();
         while(opModeIsActive() && !isStopRequested()) {
             travel=-gamepad1.left_stick_y;
-            goFoword(travel);
+            //goFoword(travel);
+            double strafe = gamepad1.left_stick_x*1.1;
+            float turn;
+            turn=gamepad1.right_trigger-gamepad1.left_trigger;
+            mecanum_drive(strafe,travel,turn);
             Telemetry_motors();
         }
 
     }
     public void Telemetry_motors(){
+        telemetry.addData("travel", travel);
         telemetry.addData("frontleft",frontLeft.getCurrentPosition() );telemetry.addLine();
         telemetry.addData("frontRight",frontRight.getCurrentPosition());telemetry.addLine();
         telemetry.addData("backleft",backLeft.getCurrentPosition());telemetry.addLine();
