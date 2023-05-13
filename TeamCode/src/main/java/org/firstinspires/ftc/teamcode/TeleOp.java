@@ -25,6 +25,7 @@ public class TeleOp extends LinearOpMode {
         public double gear_pos = 0;
         public int color_number = 0;
 
+
     @Override
     public void runOpMode() {
 
@@ -58,27 +59,35 @@ public class TeleOp extends LinearOpMode {
         waitForStart();
         while(opModeIsActive() && !isStopRequested()) {
             color_number=colorSensor.readUnsignedByte(ModernRoboticsI2cColorSensor.Register.COLOR_NUMBER);
-           /* travel=-gamepad1.left_stick_y;
+
+            travel=-gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x*1.1;
             float turn;
             turn=gamepad1.right_trigger-gamepad1.left_trigger;
-            mecanum_drive(strafe,travel,turn);
-            servo_angle+=gamepad1.right_stick_y*0.001;
-            if(gamepad1.dpad_up)servo_angle+=0.0002;
-            if(gamepad1.dpad_down)servo_angle-=0.0002;
-            if(servo_angle>=0.8)servo_angle=0.8;
-            if(servo_angle<=0)servo_angle=0;
-            angle.setPosition(servo_angle);
-            gear_pos+=gamepad1.right_stick_x*0.001;
-            if(gamepad1.dpad_left)gear_pos-=0.0002;
-            if(gamepad1.dpad_right)gear_pos+=0.0002;
-            if(gear_pos<=0)gear_pos=0;
-            if(gear_pos>=1)gear_pos=1;
-            gear_rack.setPosition(gear_pos);
-            Telemetry_Servos();*/
+            //mecanum_drive(strafe,travel,turn);
 
+            angle();
+            gear();
+            Telemetry_Servos();
         }
 
+    }
+
+    public void gear(){
+        gear_pos+=gamepad1.right_stick_x*0.001;
+        if(gamepad1.dpad_left)gear_pos-=0.0002;
+        if(gamepad1.dpad_right)gear_pos+=0.0002;
+        if(gear_pos<=0)gear_pos=0;
+        if(gear_pos>=1)gear_pos=1;
+        gear_rack.setPosition(gear_pos);
+    }
+    public void angle(){
+        servo_angle+=gamepad1.right_stick_y*0.001;
+        if(gamepad1.dpad_up)servo_angle+=0.0002;
+        if(gamepad1.dpad_down)servo_angle-=0.0002;
+        if(servo_angle>=0.8)servo_angle=0.8;
+        if(servo_angle<=0)servo_angle=0;
+        angle.setPosition(servo_angle);
     }
 
     public void Telemetry_sensor(){
