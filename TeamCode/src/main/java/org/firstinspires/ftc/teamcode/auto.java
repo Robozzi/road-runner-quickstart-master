@@ -29,6 +29,6 @@ public class auto extends LinearOpMode {
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(cub1);
+        drive.followTrajectory(myTrajectory);
     }
 }
