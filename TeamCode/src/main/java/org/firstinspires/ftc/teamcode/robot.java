@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,10 +11,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class robot {
     //public Gamepad gamepad1 = new Gamepad();
-    public DcMotorEx leftFront,rightFront,leftRear,rightRear;
-    public Servo angle, gear_rack;
+    public DcMotorEx leftFront,rightFront,leftRear,rightRear, angle;
+    public Servo  gear_rack;
     public ModernRoboticsI2cColorSensor colorSensor ;
-    public double servo_angle = 0;
+    public int servo_angle = 0;
     public double gear_pos = 0;
     public int color_number = 0;
     public double gear_pos_vec[]={};
@@ -23,7 +24,7 @@ public class robot {
         rightFront = hardwaremap.get(DcMotorEx.class, "frontRight");
         leftRear = hardwaremap.get(DcMotorEx.class, "backLeft");
         rightRear = hardwaremap.get(DcMotorEx.class, "backRight");
-        angle = hardwaremap.get(Servo.class, "angle");
+        angle = hardwaremap.get(DcMotorEx.class, "angle");
         gear_rack = hardwaremap.get(Servo.class, "gear_rack");
         colorSensor = hardwaremap.get(ModernRoboticsI2cColorSensor.class, "color sensor");
     }
@@ -35,14 +36,16 @@ public class robot {
         rightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         leftRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightRear.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        angle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         leftFront.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         leftRear.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         rightRear.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        angle.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void gear(Gamepad gamepad1){
-        gear_pos+=gamepad1.right_stick_x*0.001;
+        gear_pos+=gamepad1.right_stick_x*0.002;
         if(gamepad1.dpad_left)gear_pos-=0.0002;
         if(gamepad1.dpad_right)gear_pos+=0.0002;
         if(gear_pos<=0)gear_pos=0;
@@ -53,9 +56,9 @@ public class robot {
         servo_angle+=gamepad1.right_stick_y*0.001;
         if(gamepad1.dpad_up)servo_angle+=0.0002;
         if(gamepad1.dpad_down)servo_angle-=0.0002;
-        if(servo_angle>=0.8)servo_angle=0.8;
-        if(servo_angle<=0)servo_angle=0;
-        angle.setPosition(servo_angle);
+        //if(servo_angle>=0.8)servo_angle=0.8;
+        //if(servo_angle<=0)servo_angle=0;
+        angle.setTargetPosition(servo_angle);
     }
     public void Telemetry_sensor(Telemetry telemetry){
         telemetry.addData("color number", color_number);
@@ -63,7 +66,7 @@ public class robot {
     }
     public void Telemetry_Servos(Telemetry telemetry){
         telemetry.addData("angle1",servo_angle);
-        telemetry.addData("angle", angle.getPosition());
+        telemetry.addData("angle", angle.getCurrentPosition());
         telemetry.addData("gear_rack", gear_rack.getPosition());
         telemetry.update();
     }
