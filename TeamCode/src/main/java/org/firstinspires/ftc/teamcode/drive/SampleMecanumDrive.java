@@ -61,7 +61,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
 public class SampleMecanumDrive extends MecanumDrive {
 
     public Servo gear_rack;
-    public DcMotorEx angle;
+   // public DcMotorEx angle;
     public ModernRoboticsI2cColorSensor colorSensor ;
     public double servo_angle = 0;
     public double gear_pos = 0;
@@ -116,7 +116,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
         leftRear = hardwareMap.get(DcMotorEx.class, "backLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "backRight");
-        angle = hardwareMap.get(DcMotorEx.class, "angle");
+     //   angle = hardwareMap.get(DcMotorEx.class, "angle");
         gear_rack = hardwareMap.get(Servo.class, "gear_rack");
         colorSensor = hardwareMap.get(ModernRoboticsI2cColorSensor.class, "color sensor");
 
@@ -139,8 +139,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

@@ -10,11 +10,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class robot {
-    //public Gamepad gamepad1 = new Gamepad();
     public DcMotorEx leftFront,rightFront,leftRear,rightRear, angle;
     public Servo  gear_rack;
     public ModernRoboticsI2cColorSensor colorSensor ;
-    public int servo_angle = 0;
+    public int motor_angle = 0;
     public double gear_pos = 0;
     public int color_number = 0;
     public double gear_pos_vec[]={};
@@ -29,8 +28,7 @@ public class robot {
         colorSensor = hardwaremap.get(ModernRoboticsI2cColorSensor.class, "color sensor");
     }
     public void init(){
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -53,19 +51,19 @@ public class robot {
         gear_rack.setPosition(gear_pos);
     }
     public void angle(Gamepad gamepad1){
-        servo_angle+=gamepad1.right_stick_y*0.001;
-        if(gamepad1.dpad_up)servo_angle+=0.0002;
-        if(gamepad1.dpad_down)servo_angle-=0.0002;
+        motor_angle+=gamepad1.right_stick_y*0.001;
+        if(gamepad1.dpad_up)motor_angle+=0.0002;
+        if(gamepad1.dpad_down)motor_angle-=0.0002;
         //if(servo_angle>=0.8)servo_angle=0.8;
         //if(servo_angle<=0)servo_angle=0;
-        angle.setTargetPosition(servo_angle);
+        angle.setTargetPosition(motor_angle);
     }
     public void Telemetry_sensor(Telemetry telemetry){
         telemetry.addData("color number", color_number);
         telemetry.update();
     }
     public void Telemetry_Servos(Telemetry telemetry){
-        telemetry.addData("angle1",servo_angle);
+        telemetry.addData("angle1",motor_angle);
         telemetry.addData("angle", angle.getCurrentPosition());
         telemetry.addData("gear_rack", gear_rack.getPosition());
         telemetry.update();
